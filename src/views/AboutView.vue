@@ -4,12 +4,15 @@
   </div>
 </template>
 
-<style>
+<style lang="less">
 @media (min-width: 1024px) {
   .about {
     min-height: 100vh;
     display: flex;
     align-items: center;
+    h1 {
+      color: red;
+    }
   }
 }
 </style>
