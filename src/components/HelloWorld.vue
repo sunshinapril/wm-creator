@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useLanguage from "@/stores/language";
+import useLanguage from "@/stores/modules/language";
 import type {LANGUAGE} from '@/config'
 defineProps<{
   msg: string;

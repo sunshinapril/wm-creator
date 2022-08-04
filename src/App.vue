@@ -2,7 +2,7 @@
 import {ref, nextTick, provide, computed} from 'vue'
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
-import useLanguage from '@/stores/language'
+import useLanguage from '@/stores/modules/language'
 const isReloadRouter = ref(true)
 const reload = () => {
   isReloadRouter.value = false
