@@ -14,3 +14,12 @@ declare module 'virtual:*' {
   const result: any;
   export default result;
 }
+
+
+declare module "*.tsx" {
+  import Vue from "compatible-vue";
+  export default Vue;
+}
+
+
+

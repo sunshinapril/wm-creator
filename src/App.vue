@@ -1,6 +1,19 @@
 <script setup lang="ts">
+import {ref, nextTick, provide, computed} from 'vue'
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
+import useLanguage from '@/stores/language'
+const isReloadRouter = ref(true)
+const reload = () => {
+  isReloadRouter.value = false
+  nextTick(() => {
+    isReloadRouter.value = true
+  })
+}
+provide("reload", reload)
+
+const locale = computed(() => useLanguage().locale)
+
 </script>
 
 <template>
@@ -8,14 +21,12 @@ import HelloWorld from "./components/HelloWorld.vue";
     <img
       alt="Vue logo"
       class="logo"
-      src="@/assets/logo.svg"
+      src="@/assets/icon/logo.svg"
       width="125"
       height="125"
     />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
@@ -23,7 +34,10 @@ import HelloWorld from "./components/HelloWorld.vue";
     </div>
   </header>
 
-  <RouterView />
+  <el-config-provider :locale="locale">
+    <router-view v-if="isReloadRouter" />
+  </el-config-provider>
+
 </template>
 
 <style scoped>

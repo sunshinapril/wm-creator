@@ -1,15 +1,16 @@
 import { fileURLToPath, URL } from "node:url";
 import type { UserConfig, ConfigEnv } from "vite";
 import { loadEnv } from "vite";
-import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
 import { wrapperEnv } from "./build/utils";
 import { createProxy } from "./build/proxy";
+import { getPluginsList } from "./build/plugins";
 import { OUTPUT_DIR } from "./build/constant";
+
+
 
 // https://vitejs.dev/config/
 
-export default ({ mode }: ConfigEnv): UserConfig => {
+export default ({ command, mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd());
   const viteEnv = wrapperEnv(env);
 
@@ -18,7 +19,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
   // @ts-ignore
   return {
     base: VITE_PUBLIC_PATH,
-    plugins: [vue(), vueJsx()],
+    plugins: getPluginsList(command),
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -33,19 +34,10 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       proxy: createProxy(VITE_PROXY),
     },
     build: {
-      target: "es2015",
-      outDir: OUTPUT_DIR,
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          keep_infinity: true,
-          // Used to delete console in production environment
-          drop_console: VITE_DROP_CONSOLE,
-        },
-      },
-      // Turning off brotliSize display can slightly reduce packaging time
-      // @ts-ignore
+      sourcemap: false,
+      //@ts-ignore
       brotliSize: false,
+      // 消除打包大小超过500kb警告
       chunkSizeWarningLimit: 2000,
     },
   };
