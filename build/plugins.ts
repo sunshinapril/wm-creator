@@ -7,10 +7,19 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import styleImport from "vite-plugin-style-import";
+import VueI18n from "@intlify/vite-plugin-vue-i18n";
+import {resolve} from "path";
+import removeConsole from "vite-plugin-remove-console";
 export function getPluginsList(command) {
   console.log(command);
   return [
     vue(),
+    // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
+    VueI18n({
+      runtimeOnly: true,
+      compositionOnly: true,
+      include: [resolve("@/lang/**")]
+    }),
     vueJsx(),
     AutoImport({
       resolvers: [ElementPlusResolver()],
@@ -51,6 +60,7 @@ export function getPluginsList(command) {
         },
       ],
     }),
+    removeConsole(),
     viteCompression()
   ]
 }
